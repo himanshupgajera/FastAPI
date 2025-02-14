@@ -76,3 +76,16 @@ def delete_blog(id: int):
     conn.commit()
     cursor.close()
     return {"Message":"Blog deleted successfully"}
+
+# Serarch a blog by title
+@app.get("/blog/search")
+def search_blog(title: str):
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM blog WHERE title = %s", (title,))
+    blog = cursor.fetchone()
+    cursor.close()
+    if blog is None:
+        return {"Error":"No blog available"}
+    else:
+        return blog
+
